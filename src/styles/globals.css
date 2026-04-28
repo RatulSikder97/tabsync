@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 12% 99%;
+    --foreground: 240 10% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --primary: 248 84% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 248 84% 66%;
+    --grad-a: 248 84% 66%;
+    --grad-b: 286 70% 60%;
+    --grad-c: 200 80% 56%;
+  }
+
+  .dark {
+    --background: 240 14% 5%;
+    --foreground: 240 5% 96%;
+    --card: 240 12% 8%;
+    --card-foreground: 240 5% 96%;
+    --popover: 240 14% 7%;
+    --popover-foreground: 240 5% 96%;
+    --primary: 248 86% 70%;
+    --primary-foreground: 240 14% 5%;
+    --secondary: 240 8% 13%;
+    --secondary-foreground: 240 5% 96%;
+    --muted: 240 8% 12%;
+    --muted-foreground: 240 5% 60%;
+    --accent: 240 8% 16%;
+    --accent-foreground: 240 5% 96%;
+    --destructive: 0 70% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 8% 16%;
+    --input: 240 8% 16%;
+    --ring: 248 86% 70%;
+    --grad-a: 248 86% 64%;
+    --grad-b: 286 72% 56%;
+    --grad-c: 200 82% 52%;
+  }
+
+  * { @apply border-border; }
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { @apply bg-muted/70 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-accent; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  :focus-visible { @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-card/70 backdrop-blur-xl border border-border/60;
+  }
+
+  /* Animated mesh-gradient backdrop, used in the header. Pure CSS, no JS needed. */
+  .mesh {
+    background:
+      radial-gradient(at 14% 8%,  hsl(var(--grad-a) / 0.22) 0px, transparent 45%),
+      radial-gradient(at 86% 12%, hsl(var(--grad-b) / 0.18) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, hsl(var(--grad-c) / 0.14) 0px, transparent 55%);
+    background-size: 220% 220%;
+    animation: mesh-pan 22s ease-in-out infinite;
+  }
+
+  .mesh-strong {
+    background:
+      radial-gradient(at 20% 20%,  hsl(var(--grad-a) / 0.32) 0px, transparent 45%),
+      radial-gradient(at 80% 30%,  hsl(var(--grad-b) / 0.28) 0px, transparent 50%),
+      radial-gradient(at 50% 90%,  hsl(var(--grad-c) / 0.22) 0px, transparent 55%);
+    background-size: 220% 220%;
+    animation: mesh-pan 18s ease-in-out infinite;
+  }
+
+  /* Hairline gradient border around cards on hover. */
+  .card-hover {
+    position: relative;
+  }
+  .card-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(var(--grad-a) / 0.6), hsl(var(--grad-b) / 0.4), hsl(var(--grad-c) / 0.3));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+  }
+  .card-hover:hover::before { opacity: 1; }
+
+  /* Soft pulsing dot for sync states. */
+  .pulse-dot {
+    position: relative;
+  }
+  .pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.35;
+    filter: blur(4px);
+    animation: pulse-soft 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes mesh-pan {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(0.85); opacity: 0.25; }
+  50% { transform: scale(1.15); opacity: 0.55; }
+}

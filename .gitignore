@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-zip
+.DS_Store
+*.log
+.vite
+
+# Playwright
+.playwright-profile/
+test-results/
+playwright-report/
